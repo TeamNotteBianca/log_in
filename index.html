@@ -16,10 +16,9 @@
   <div id="result"></div>
 
   <script>
-    // Worker URL
-    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev"; // Cloudflare Worker 주소
+    // Worker 도메인
+    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev";
 
-    // 로그인 버튼 클릭
     document.getElementById("naver-login").addEventListener("click", () => {
       // CSRF 방지용 랜덤 state 생성
       const state = Math.random().toString(36).substring(2, 15);
@@ -27,7 +26,7 @@
       window.location.href = `${WORKER_URL}/login?state=${state}`;
     });
 
-    // Worker에서 전달한 access_token과 사용자 정보 처리
+    // Worker에서 전달한 token과 사용자 정보 처리
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const user = params.get("user");
