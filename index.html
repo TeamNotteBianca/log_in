@@ -24,7 +24,7 @@
       // CSRF 방지용 랜덤 state 생성
       const state = Math.random().toString(36).substring(2, 15);
       // Worker /login 호출
-      window.location.href = `${WORKER_URL}z/login?state=${state}`;
+      window.location.href = `https://log-in.rabbitlove2013.workers.dev/login?state=${state}`;
     });
 
     // Worker에서 전달한 access_token과 사용자 정보 처리
