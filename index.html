@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>네이버 로그인 테스트</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 20px; white-space: pre-wrap; }
+  </style>
 </head>
 <body>
   <h1>네이버 로그인 테스트</h1>
@@ -11,23 +16,25 @@
   <div id="result"></div>
 
   <script>
-    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev/callback"; // Worker 주소
+    // Worker URL
+    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev/login"; // Cloudflare Worker 주소
 
+    // 로그인 버튼 클릭
     document.getElementById("naver-login").addEventListener("click", () => {
       // CSRF 방지용 랜덤 state 생성
       const state = Math.random().toString(36).substring(2, 15);
-      // Worker로 로그인 요청
+      // Worker /login 호출
       window.location.href = `${WORKER_URL}/login?state=${state}`;
     });
 
-    // Worker에서 JSON 전달 시 처리
-    if (window.location.search.includes("token")) {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
-      const user = params.get("user");
-      if (token && user) {
-        document.getElementById("result").innerText = `Access Token: ${token}\nUser: ${user}`;
-      }
+    // Worker에서 전달한 access_token과 사용자 정보 처리
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const user = params.get("user");
+
+    if (token && user) {
+      document.getElementById("result").innerText =
+        `Access Token: ${token}\nUser Info: ${user}`;
     }
   </script>
 </body>
