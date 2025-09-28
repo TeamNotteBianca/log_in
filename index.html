@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>네이버 로그인 테스트</title>
-  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
   <h1>네이버 로그인 테스트</h1>
@@ -12,21 +11,22 @@
   <div id="result"></div>
 
   <script>
-    const CLIENT_ID = "nbENBx5t29_h5yeX6zNr";  // 네이버 개발자센터에서 발급
-    const REDIRECT_URI = "https://log-in.rabbitlove2013.workers.dev/callback"; // Callback URL
+    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev/callback"; // Worker 주소
 
     document.getElementById("naver-login").addEventListener("click", () => {
-      const state = Math.random().toString(36).substring(2, 15); // CSRF 방지용
-      const authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`;
-      window.location.href = authUrl;
+      // CSRF 방지용 랜덤 state 생성
+      const state = Math.random().toString(36).substring(2, 15);
+      // Worker로 로그인 요청
+      window.location.href = `${WORKER_URL}/login?state=${state}`;
     });
 
-    // Callback 페이지에서 access_token 처리
-    if (window.location.hash) {
-      const hash = new URLSearchParams(window.location.hash.substring(1));
-      const accessToken = hash.get("access_token");
-      if (accessToken) {
-        document.getElementById("result").innerText = `Access Token: ${accessToken}`;
+    // Worker에서 JSON 전달 시 처리
+    if (window.location.search.includes("token")) {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const user = params.get("user");
+      if (token && user) {
+        document.getElementById("result").innerText = `Access Token: ${token}\nUser: ${user}`;
       }
     }
   </script>
