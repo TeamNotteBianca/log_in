@@ -1,41 +1,105 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>네이버 로그인 테스트</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #result { margin-top: 20px; white-space: pre-wrap; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노트</title>
+    
 </head>
 <body>
-  <h1>네이버 로그인 테스트</h1>
-  <button id="naver-login">네이버로 로그인</button>
+    <div></div>
+    <div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="logindiv">
+        <div id="logindivs">
+            <h1>백야 서비스에 로그인</h3>
+            <h4>로그인하여 다양한 기능을 경험해 보세요!</h6>
+            <div id="naver_id_login" onclick="login()">
+            <img src="/사진/btnG_축약형.png" alt="네이버 로그인">
+        </div>  
+        </div>
+        
+    </div>
+    <script>
+        function login(){
+            window.location.href ='https://log-in.rabbitlove2013.workers.dev/login/login';
+        }
+        // Worker에서 전달한 access_token과 사용자 정보 처리
+        const params = new URLSearchParams(window.location.search);
+        const userString = params.get("user");
+        console.log("userString",userString);
 
-  <div id="result"></div>
+        if (userString) {
+            try {
+                const user = JSON.parse(userString); // JSON 파싱
+                console.log("userId:",user.response.id);
+              
+            } catch (e) {
+                console.log("userString:",'사용자 정보 파싱 실패');
+            }
+        }
 
-  <script>
-    // Worker URL
-    const WORKER_URL = "https://log-in.rabbitlove2013.workers.dev"; // Cloudflare Worker 주소
+    </script>
+    <style>
+        
+        #logindiv{
+            background-image: url('/사진/login.jpg');
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+        
+        }
+         #logindivs{
+            backdrop-filter: blur(2.6px);
 
-    // 로그인 버튼 클릭
-    document.getElementById("naver-login").addEventListener("click", () => {
-      // CSRF 방지용 랜덤 state 생성
-      const state = Math.random().toString(36).substring(2, 15);
-      // Worker /login 호출
-      window.location.href ='https://log-in.rabbitlove2013.workers.dev/login/login'
-    });
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        body {
 
-    // Worker에서 전달한 access_token과 사용자 정보 처리
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const user = params.get("user");
+            margin: 0;
+        }
 
-    if (token && user) {
-      document.getElementById("result").innerText =
-        `Access Token: ${token}\nUser Info: ${user}`;
-    }
-  </script>
+        h1 {
+            font-family: TaebaekGalaxy;
+            text-align: center;
+            font-weight: lighter;
+            margin: 0 auto;
+        }
+
+        h4 {
+            margin: 8px;
+            font-family: TaebaekGalaxy;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @font-face {
+            font-family: 'TaebaekGalaxy';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/TAEBAEKmilkyway.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
+
+        #naver_id_login {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #naver_id_login img {
+            width: 10vw;
+        }
+    </style>
 </body>
 </html>
